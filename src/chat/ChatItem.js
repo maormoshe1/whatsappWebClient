@@ -1,46 +1,31 @@
 import './ChatItem.css';
 import MessageList from '../messages/MessageList'
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import CurrentSession from './CurrentSession';
 
-function ChatItem({ messages, curIdContact, curNameContact, GetMessages, GetContacts }) {
+function ChatItem({ token, messages, curIdContact, curNameContact, GetMessages, GetContacts }) {
 
-    let today = new Date();
     const msg = useRef(null);
-
-    const [messageList, setMessageList] = useState(messages);
     
-    const getTime = function () {
-        let h = today.getHours();
-        let m = today.getMinutes();
-        if (h < 12) {
-            h = '0' + h;
-        }
-        if (m < 10) {
-            m = '0' + m;
-        }
-        return h + ":" + m
-    }
-
     const handleSend = (content) => {
         if ((content != "") ) {
-            fetch ('https://localhost:7132/api/contacts/' + curIdContact + '/messages',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            $.ajax({
+                url:'https://localhost:7132/api/contacts/' + curIdContact + '/messages',
+                type: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer '+ token);
                 },
-                body: JSON.stringify({content: content})
-            }).then(res => {
-                if(res.ok){  
+                contentType: 'application/json',
+                data: JSON.stringify({content: content}),
+                success: function () {
                     GetMessages(curIdContact);
                     GetContacts();
-                }
-            })
+                },
+                error: function() {},
+            })};
             document.getElementById("toSendField").value = "";
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
         }
-    }
-
 
     if (curNameContact=="") {
         return (
@@ -49,7 +34,6 @@ function ChatItem({ messages, curIdContact, curNameContact, GetMessages, GetCont
             </div>
         );
     }
-
 
     return (
         <div className='chats'>

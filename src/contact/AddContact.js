@@ -1,10 +1,11 @@
 import { useRef } from "react";
-import users from "../hard_coded/users";
 
-function AddContact({contacts, GetContacts}) {
+function AddContact({token, contacts, GetContacts}) {
     const new_contact_id = useRef(null);
     const new_contact_name = useRef(null);
     const new_contact_server = useRef(null);
+    
+
     const Add_contact = function () {
 
         var existInChat = false;
@@ -25,33 +26,35 @@ function AddContact({contacts, GetContacts}) {
         }
 
         if (!existInChat) { 
-            fetch ('https://localhost:7132/api/contacts',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            $.ajax({
+                url:'https://localhost:7132/api/contacts',
+                type: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer '+ token);
                 },
-                body: JSON.stringify({id: new_contact_id.current.value, name:new_contact_name.current.value,
-                     server:new_contact_server.current.value })
-            }).then(res => {
-                if(res.ok){ 
+                contentType: 'application/json',
+                data: JSON.stringify({id: new_contact_id.current.value, name:new_contact_name.current.value,
+                    server:new_contact_server.current.value }),
+                success: function () {
                     document.getElementById('alertSuccess').innerHTML = "Contact added:)";
                     document.getElementById('alertSuccess').style.visibility = "visible";
                     GetContacts();
-                }
-                else {
+                },
+                error: function() {
                     document.getElementById('alert').innerHTML = "There is no user with this username:(";
                     document.getElementById('alert').style.visibility = "visible";
-                }
-            })       
-        }
+                },
+            })}
         else{
             document.getElementById('alert').innerHTML = "This user is already in your chats ;)";
 		    document.getElementById('alert').style.visibility = "visible";
         }       
     }
+        
 
     const closeAlert = function() {
 		document.getElementById('alert').style.visibility = "collapse";
+        document.getElementById('alertSuccess').style.visibility = "collapse";
         new_contact_id.current.value = "";
         new_contact_name.current.value = "";
         new_contact_server.current.value = "";

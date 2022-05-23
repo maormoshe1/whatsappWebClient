@@ -1,5 +1,4 @@
 import ContactItem from "./ContactItem";
-import users from "../hard_coded/users";
 import "./ContactItem.css"
 
 function ContactList({contacts, ShowCurSession}){

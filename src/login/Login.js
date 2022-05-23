@@ -1,8 +1,6 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import './Login.css';
 import { useHistory } from "react-router-dom"
-import users from '../hard_coded/users'
-import { wait } from '@testing-library/user-event/dist/utils';
 
 
 function Login() {
@@ -14,83 +12,67 @@ function Login() {
 	const displayName = useRef(null);
 	let history = useHistory();
 
+	const handleLogin = () => {		
+		$.ajax({
+			url:'https://localhost:7132/api/Users/login?username='+username.current.value+'&password='+password.current.value,
+			type: 'POST',
+			contentType: 'application/json',
+			success: function (data) {
+				localStorage.setItem('token',data);
+				history.push("/chat_page");
+			},
+			error: function() {
+				document.getElementById('alert').style.visibility = "collapse";
+				document.getElementById('alert').innerHTML = "Incorrect username and / or password";
+				document.getElementById('alert').style.visibility = "visible";
+			},
+		});
+	}
 
-	// const handleLogin = () => {
-	// 	fetch ('https://localhost:7132/api/Users',{
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({username: username.current.value, password: password.current.value})
-    //         }).then(res => {
-    //             if(res.ok){ 
-	// 				localStorage.setItem('token', 'this is the token')
-	// 				history.push("/chat_page")
-	// 				return;                
-    //             }
-    //             else {
-	// 				document.getElementById('alert').style.visibility = "collapse";
-	// 				document.getElementById('alert').innerHTML = "Incorrect username and / or password";
-	// 				document.getElementById('alert').style.visibility = "visible";
-    //             }
-    //         })  
-	// }
+	const handleRegister =() => {
+		if (usernameR.current.value == "" || passwordR.current.value == "" || password2R.current.value == "" ||displayName.current.value == "" ) {
+			document.getElementById('alert').style.visibility = "collapse";
+			document.getElementById('alert').innerHTML = "Something is missing";
+			document.getElementById('alert').style.visibility = "visible";	
+			return;
+		}
 
-	// const handleRegister =() => {
-	// 	if (passwordR.current.value != password2R.current.value) {
-	// 		document.getElementById('alert').style.visibility = "collapse";
-	// 		document.getElementById('alert').innerHTML = "The passwords do not match:(";
-	// 		document.getElementById('alert').style.visibility = "visible";
+		if (passwordR.current.value != password2R.current.value) {
+			document.getElementById('alert').style.visibility = "collapse";
+			document.getElementById('alert').innerHTML = "The passwords do not match:(";
+			document.getElementById('alert').style.visibility = "visible";
 
-	// 		document.getElementById("passwordR").value = "";
-	// 		document.getElementById("password2R").value = "";
-	// 		return;
-	// 	}
+			document.getElementById("passwordR").value = "";
+			document.getElementById("password2R").value = "";
+			return;
+		}
 
-	// 	var passw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{3,}/;
-	// 	if(!passwordR.current.value.match(passw)) {
-	// 		document.getElementById('alert').style.visibility = "collapse";
-	// 		document.getElementById('alert').innerHTML = "Password need to contain at least one numeric digit, one uppercase and one lowercase letter";
-	// 		document.getElementById('alert').style.visibility = "visible";	
-	// 		return;
-	// 	}
+		var passw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{3,}/;
+		if(!passwordR.current.value.match(passw)) {
+			document.getElementById('alert').style.visibility = "collapse";
+			document.getElementById('alert').innerHTML = "Password need to contain at least one numeric digit, one uppercase and one lowercase letter";
+			document.getElementById('alert').style.visibility = "visible";	
+			return;
+		}
+		
+		$.ajax({
+			url:'https://localhost:7132/api/Users/signup?username='+usernameR.current.value+'&password='+passwordR.current.value+'&displayname='+displayName.current.value,
+			type: 'POST',
+			contentType: 'application/json',
+			success: function (data) {
+				localStorage.setItem('token',data);
+				history.push("/chat_page");
+			},
+			error: function() {
+				document.getElementById('alert').style.visibility = "collapse";
+				document.getElementById('alert').innerHTML = "This username is taken, try another one:)";
+				document.getElementById('alert').style.visibility = "visible";
 
-	// 	if (usernameR.current.value == "" || passwordR.current.value == "" || password2R.current.value == "" ||displayName.current.value == "" ) {
-	// 		document.getElementById('alert').style.visibility = "collapse";
-	// 		document.getElementById('alert').innerHTML = "Something is missing";
-	// 		document.getElementById('alert').style.visibility = "visible";	
-	// 		return;
-	// 	}
-
-	// 	//users.push({ uname: usernameR.current.value, dname: displayName.current.value, password: passwordR.current.value, contacts: [] })
-	// 	//localStorage.setItem('userName',usernameR.current.value)
-	// 	//history.push("/chat_page")
-
-	// 	fetch ('https://localhost:7132/api/Users',{
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({username: username.current.value, password: password.current.value, displayName: displayName.current.value})
-    //         }).then(res => {
-    //             if(res.ok){ 
-	// 				localStorage.setItem('token', 'this is the token')
-	// 				history.push("/chat_page")
-	// 				return;                
-    //             }
-    //             else {
-	// 				document.getElementById('alert').style.visibility = "collapse";
-	// 				document.getElementById('alert').innerHTML = "This username is taken, try another one:)";
-	// 				document.getElementById('alert').style.visibility = "visible";
-	
-	// 				document.getElementById("usernameR").value = "";
-	// 				document.getElementById("passwordR").value = "";
-	// 				document.getElementById("password2R").value = "";
-	// 				return;		
-    //             }
-    //         }) 		
-	// }
-
+				document.getElementById("usernameR").value = "";
+			},
+		});
+	}
+		
 	const handleSwitchToLogin = () => {
 		closeAlert();
 		document.getElementById("registerCan").style.visibility = "collapse";
@@ -141,67 +123,6 @@ function Login() {
 		}
 	}
 
-	const handleLogin = (uname, password) => {
-		for (let user of users) {
-			if (user.uname == uname.current.value && user.password == password.current.value) {
-				localStorage.setItem('userName',uname.current.value)
-				history.push("/chat_page")
-
-				return;
-			}
-		}
-
-		document.getElementById('alert').style.visibility = "collapse";
-		document.getElementById('alert').innerHTML = "Incorrect username and / or password";
-		document.getElementById('alert').style.visibility = "visible";
-	}
-
-
-	const handleRegister = (usernameR, passwordR, password2R, displayName) => {
-		for (let user of users) {
-			if (user.uname == usernameR.current.value) {
-				document.getElementById('alert').style.visibility = "collapse";
-				document.getElementById('alert').innerHTML = "This username is taken, try another one:)";
-				document.getElementById('alert').style.visibility = "visible";
-
-				document.getElementById("usernameR").value = "";
-				document.getElementById("passwordR").value = "";
-				document.getElementById("password2R").value = "";
-				return;
-			}
-
-		}
-		if (passwordR.current.value != password2R.current.value) {
-			document.getElementById('alert').style.visibility = "collapse";
-			document.getElementById('alert').innerHTML = "The passwords do not match:(";
-			document.getElementById('alert').style.visibility = "visible";
-
-			document.getElementById("passwordR").value = "";
-			document.getElementById("password2R").value = "";
-			return;
-		}
-
-		var passw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{3,}/;
-		if(!passwordR.current.value.match(passw)) {
-			document.getElementById('alert').style.visibility = "collapse";
-			document.getElementById('alert').innerHTML = "Password need to contain at least one numeric digit, one uppercase and one lowercase letter";
-			document.getElementById('alert').style.visibility = "visible";	
-			return
-		}
-
-		if (usernameR.current.value == "" || passwordR.current.value == "" || displayName.current.value == "") {
-			document.getElementById('alert').style.visibility = "collapse";
-			document.getElementById('alert').innerHTML = "Something is missing";
-			document.getElementById('alert').style.visibility = "visible";	
-			return
-		}
-
-		users.push({ uname: usernameR.current.value, dname: displayName.current.value, password: passwordR.current.value, contacts: [] })
-		localStorage.setItem('userName',usernameR.current.value)
-		history.push("/chat_page")
-
-	}
-
 	const closeAlert = function() {
 		document.getElementById('alert').style.visibility = "collapse";
 	}
@@ -219,7 +140,7 @@ function Login() {
 					<br /><br />
 					<input onClick={() => { closeAlert() }} ref={password} className='input' type="password" placeholder='Password' required />
 
-					<button  onClick={() => { handleLogin(username, password) }} className='btn-grad'>Login</button>
+					<button  onClick={() => { handleLogin() }} className='btn-grad'>Login</button>
 
 				</div>
 
@@ -244,7 +165,7 @@ function Login() {
 					<br /><br />
 					<input onClick={() => { closeAlert() }} ref={displayName} className='input' id="displayName" placeholder='Display name' required />
 
-					<button onClick={() => { handleRegister(usernameR, passwordR, password2R, displayName) }} className='btn-grad'>Sign Up</button>
+					<button onClick={() => { handleRegister() }} className='btn-grad'>Sign Up</button>
 				</div>
 				<div id='ChangeToLoginCan' className='ChangeToLoginCanvas'>
 					<h1 className='textSwitch'>Welcome Back!</h1>
