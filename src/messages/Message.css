@@ -1,0 +1,92 @@
+#text-msg{ 
+    background-color: aquamarine;
+    border-radius: 50px;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+#img-msg{ 
+    background-color: aquamarine;
+    border-radius: 30px;
+    padding: 2px;
+    width: fit-content;
+
+}
+
+#media {
+    width: 200px;
+}
+
+#reciveMsg-text{ 
+    background-color: white;
+    border-radius: 50px;
+    width: fit-content;
+    position: relative;
+    right: -70%;   
+}
+
+#reciveMsg-media{ 
+    background-color: white;
+    border-radius: 30px;
+    padding: 2px;
+    width: fit-content;
+    position: relative;
+    right: -70%;
+    
+}
+
+.btnSendMedia {
+	background-image: linear-gradient(to right, #b977ca 0%, #cc6a8a  51%, #c888d8  100%);
+	text-align: center;
+	font-size: small;
+	background-size: 200% auto;
+	color: white;            
+	width: 20%;
+	border-radius: 10px;
+	left: 70%;
+}
+
+.btnSendAudio {
+	background-image: linear-gradient(to right, #b977ca 0%, #cc6a8a  51%, #c888d8  100%);
+	text-align: center;
+	font-size: small;
+	background-size: 200% auto;
+	color: white;            
+	width: 10%;
+	border-radius: 10px;
+	left: 70%;
+    transform: translateY(130%);
+}
+
+#btnStop {
+    background-image: linear-gradient(to right, rgb(231, 121, 157) 0%, #c300f4  51%, #e18fab  100%);
+	text-align: center;
+	font-size: large;
+	background-size: 200% auto;
+	color: white;            
+	width: 50%;
+	border-radius: 10px;
+	left: 70%;
+    transform: translate(40%, -45%);
+}
+
+#btnStart {
+    background-image: linear-gradient(to right, #c300f4 0%, #87314e  51%, #cf11ff  100%);
+	text-align: center;
+	font-size:large;
+	background-size: 200% auto;
+	color: white;            
+	width: 50%;
+	border-radius: 10px;
+	left: 10%;
+    transform: translate(-150%, 50%);
+}
+
+.recordingMessage {
+    visibility: collapse;
+    height: 100px;
+    transform: translateX(70%);
+}
+
+
+

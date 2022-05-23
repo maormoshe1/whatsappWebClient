@@ -1,0 +1,52 @@
+.msg-controller {
+    position: absolute;
+    bottom: 7%;
+}
+#attatchment{
+    position: fixed;
+    left: 40%;
+}
+#toSendField{
+    position: fixed;
+    border-radius: 5px;
+    width: 40%;
+    left: 45%;
+}
+
+#send{
+    position: fixed;
+    left: 86%;
+    font-size:x-large;
+}
+#background{
+    position: absolute;
+    height: 110%;
+    width : 100%;
+}
+
+#background2{
+    position: fixed;
+    height: 100%;
+    width : 56.5%;
+}
+
+.message{
+    position: absolute;
+    top: 5%;
+    height: 80%;
+    width: 100%;
+}
+
+.Chats {
+    transform: translate(-50%, -50%);
+    background-color: white;
+    height: 100%;
+    z-index: -1;
+}
+
+.theChat{
+    position: fixed;
+    width: 56.2%;
+    height: 85%;
+}
+
