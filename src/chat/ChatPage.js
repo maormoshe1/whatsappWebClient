@@ -4,6 +4,8 @@ import ContactList from '../contact/ContactList';
 import { useState, useEffect } from 'react';
 import './ChatPage.css';
 import AddContact from '../contact/AddContact';
+import '../Queries'
+import Queries from '../Queries';
 
 function ChatPage() {
 
@@ -19,59 +21,18 @@ function ChatPage() {
 
     const [curIdContact, setCurIdContact] = useState('')
 
-
- 
-    function GetDname(){
-        $.ajax({
-            url: 'https://localhost:7132/api/Users/displayname',
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer '+token)
-            },
-            data: {},
-            success: function (data) {setDname(data);},
-            error: function () {},
-        });     
-    }
-
-    function GetMessages(id){
-        $.ajax({
-            url: 'https://localhost:7132/api/contacts/'+id+'/messages',
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer '+token)
-            },
-            data: {},
-            success: function (data) {setMessages(data);},
-            error: function () {},
-        });
-    }
-
-    function GetContacts(){
-        $.ajax({
-            url: 'https://localhost:7132/api/contacts',
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer '+token)
-            },
-            data: {},
-            success: function (data) {setContactList(data)},
-            error: function () {},
-        });
-    }
-
     const ShowCurSession = function (id, name) {
         setCurNameContact(name);
         setCurIdContact(id);
-        GetMessages(id);
+        Queries.GetMessages(token,id,setMessages);
     }
  
     function ShowContactList(){
         useEffect( () =>{
-            GetContacts();
+            Queries.GetContacts(token,setContactList);
         })};
      
-    GetDname();
+    Queries.GetDname(token,setDname);
     ShowContactList();
    
     return (
@@ -99,9 +60,9 @@ function ChatPage() {
                     </div>
                 </div>
                 <div className="col-8">
-                    <AddContact token={token} contacts={contactList} GetContacts={GetContacts}/>
+                    <AddContact token={token} contacts={contactList} setContactList={setContactList}/>
                     <ChatItem token={token} messages={messages} curNameContact={curNameContact}  curIdContact={curIdContact}
-                    GetMessages={GetMessages} GetContacts={GetContacts}  />
+                    setMessages={setMessages} setContactList={setContactList}  />
                 </div>
             </div>
         </div>

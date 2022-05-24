@@ -1,6 +1,7 @@
 import { useRef } from "react";
+import Queries from "../Queries";
 
-function AddContact({token, contacts, GetContacts}) {
+function AddContact({token, contacts, setContactList}) {
     const new_contact_id = useRef(null);
     const new_contact_name = useRef(null);
     const new_contact_server = useRef(null);
@@ -9,42 +10,28 @@ function AddContact({token, contacts, GetContacts}) {
     const Add_contact = function () {
 
         var existInChat = false;
+        var id = new_contact_id.current.value;
+        var name = new_contact_name.current.value;
+        var server = new_contact_server.current.value;
 
         document.getElementById('alertSuccess').style.visibility = "collapse";
         document.getElementById('alert').style.visibility = "collapse";
         
-        if(new_contact_id.current.value == "" || new_contact_name.current.value == "" || new_contact_server.current.value == ""){
+        if(id == "" || name == "" || server == ""){
             document.getElementById('alert').innerHTML = "Please, enter all details";
             document.getElementById('alert').style.visibility = "visible";
             return;
         }
 
         for (let contact of contacts) {
-            if (contact.id == new_contact_id.current.value) {
+            if (contact.id == id) {
                 existInChat = true;
             }
         }
 
-        if (!existInChat) { 
-            $.ajax({
-                url:'https://localhost:7132/api/contacts',
-                type: 'POST',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer '+ token);
-                },
-                contentType: 'application/json',
-                data: JSON.stringify({id: new_contact_id.current.value, name:new_contact_name.current.value,
-                    server:new_contact_server.current.value }),
-                success: function () {
-                    document.getElementById('alertSuccess').innerHTML = "Contact added:)";
-                    document.getElementById('alertSuccess').style.visibility = "visible";
-                    GetContacts();
-                },
-                error: function() {
-                    document.getElementById('alert').innerHTML = "There is no user with this username:(";
-                    document.getElementById('alert').style.visibility = "visible";
-                },
-            })}
+        if (!existInChat) {
+            Queries.PostAddContact(token,id,name,server,setContactList)
+        }
         else{
             document.getElementById('alert').innerHTML = "This user is already in your chats ;)";
 		    document.getElementById('alert').style.visibility = "visible";

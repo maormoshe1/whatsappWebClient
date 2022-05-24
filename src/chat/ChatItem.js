@@ -2,27 +2,16 @@ import './ChatItem.css';
 import MessageList from '../messages/MessageList'
 import { useRef } from 'react';
 import CurrentSession from './CurrentSession';
+import Queries from '../Queries';
 
-function ChatItem({ token, messages, curIdContact, curNameContact, GetMessages, GetContacts }) {
+function ChatItem({ token, messages, curIdContact, curNameContact, setMessages, setContactList }) {
 
     const msg = useRef(null);
     
     const handleSend = (content) => {
         if ((content != "") ) {
-            $.ajax({
-                url:'https://localhost:7132/api/contacts/' + curIdContact + '/messages',
-                type: 'POST',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer '+ token);
-                },
-                contentType: 'application/json',
-                data: JSON.stringify({content: content}),
-                success: function () {
-                    GetMessages(curIdContact);
-                    GetContacts();
-                },
-                error: function() {},
-            })};
+            Queries.PostNewMessage(token,curIdContact,content,setMessages,setContactList)
+        }
             document.getElementById("toSendField").value = "";
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
         }

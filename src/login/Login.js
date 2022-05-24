@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import './Login.css';
 import { useHistory } from "react-router-dom"
+import Queries from '../Queries';
 
 
 function Login() {
@@ -12,32 +13,25 @@ function Login() {
 	const displayName = useRef(null);
 	let history = useHistory();
 
-	const handleLogin = () => {		
-		$.ajax({
-			url:'https://localhost:7132/api/Users/login?username='+username.current.value+'&password='+password.current.value,
-			type: 'POST',
-			contentType: 'application/json',
-			success: function (data) {
-				localStorage.setItem('token',data);
-				history.push("/chat_page");
-			},
-			error: function() {
-				document.getElementById('alert').style.visibility = "collapse";
-				document.getElementById('alert').innerHTML = "Incorrect username and / or password";
-				document.getElementById('alert').style.visibility = "visible";
-			},
-		});
+	const handleLogin = () => {	
+		var UserName = username.current.value;
+		var Password = password.current.value;
+		Queries.PostLogin(UserName,Password,history);	
 	}
 
 	const handleRegister =() => {
-		if (usernameR.current.value == "" || passwordR.current.value == "" || password2R.current.value == "" ||displayName.current.value == "" ) {
+		var UsernameR = usernameR.current.value;
+		var PasswordR = passwordR.current.value;
+		var Password2R = password2R.current.value;
+		var DisplayName = displayName.current.value;
+		if (UsernameR == "" || PasswordR == "" || Password2R == "" || DisplayName == "" ) {
 			document.getElementById('alert').style.visibility = "collapse";
 			document.getElementById('alert').innerHTML = "Something is missing";
 			document.getElementById('alert').style.visibility = "visible";	
 			return;
 		}
 
-		if (passwordR.current.value != password2R.current.value) {
+		if (PasswordR != Password2R) {
 			document.getElementById('alert').style.visibility = "collapse";
 			document.getElementById('alert').innerHTML = "The passwords do not match:(";
 			document.getElementById('alert').style.visibility = "visible";
@@ -48,29 +42,13 @@ function Login() {
 		}
 
 		var passw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{3,}/;
-		if(!passwordR.current.value.match(passw)) {
+		if(!PasswordR.match(passw)) {
 			document.getElementById('alert').style.visibility = "collapse";
 			document.getElementById('alert').innerHTML = "Password need to contain at least one numeric digit, one uppercase and one lowercase letter";
 			document.getElementById('alert').style.visibility = "visible";	
 			return;
 		}
-		
-		$.ajax({
-			url:'https://localhost:7132/api/Users/signup?username='+usernameR.current.value+'&password='+passwordR.current.value+'&displayname='+displayName.current.value,
-			type: 'POST',
-			contentType: 'application/json',
-			success: function (data) {
-				localStorage.setItem('token',data);
-				history.push("/chat_page");
-			},
-			error: function() {
-				document.getElementById('alert').style.visibility = "collapse";
-				document.getElementById('alert').innerHTML = "This username is taken, try another one:)";
-				document.getElementById('alert').style.visibility = "visible";
-
-				document.getElementById("usernameR").value = "";
-			},
-		});
+		Queries.PostSignUp(UsernameR,PasswordR,DisplayName,history);
 	}
 		
 	const handleSwitchToLogin = () => {
