@@ -107,9 +107,10 @@ function Login() {
 	}
 
 
-	var connection = new signalR.HubConnectionBuilder().withUrl('https://localhost:7132/myHub', {  // localhost from **AspNetCore3.1 service**
-    skipNegotiation: true,
-    transport: signalR.HttpTransportType.WebSockets
+	var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug)
+    .withUrl("https://localhost:7132/myHub", {
+      skipNegotiation: true,
+      transport: signalR.HttpTransportType.WebSockets
     }).build();
 	connection.start();
 
