@@ -12,6 +12,8 @@ function ChatPage() {
     const token = localStorage.getItem("token");
 
     const [dname, setDname] = useState('');
+
+    const [server, setServer] =useState('');
     
     const [contactList, setContactList] = useState([]);
 
@@ -21,9 +23,10 @@ function ChatPage() {
 
     const [curIdContact, setCurIdContact] = useState('')
 
-    const ShowCurSession = function (id, name) {
+    const ShowCurSession = function (id, name, server) {
         setCurNameContact(name);
         setCurIdContact(id);
+        setServer(server)
         Queries.GetMessages(token,id,setMessages);
     }
  
@@ -61,8 +64,8 @@ function ChatPage() {
                 </div>
                 <div className="col-8">
                     <AddContact token={token} contacts={contactList} setContactList={setContactList}/>
-                    <ChatItem token={token} messages={messages} curNameContact={curNameContact}  curIdContact={curIdContact}
-                    setMessages={setMessages} setContactList={setContactList}  />
+                    <ChatItem token={token} messages={messages} server={server} curNameContact={curNameContact}
+                      curIdContact={curIdContact} setMessages={setMessages} setContactList={setContactList} />
                 </div>
             </div>
         </div>

@@ -4,13 +4,15 @@ import { useRef } from 'react';
 import CurrentSession from './CurrentSession';
 import Queries from '../Queries';
 
-function ChatItem({ token, messages, curIdContact, curNameContact, setMessages, setContactList }) {
+function ChatItem({ token, messages, server, curIdContact, curNameContact, setMessages, setContactList }) {
 
     const msg = useRef(null);
     
     const handleSend = (content) => {
         if ((content != "") ) {
-            Queries.PostNewMessage(token,curIdContact,content,setMessages,setContactList)
+            var username = localStorage.getItem("username");
+            Queries.PostNewMessage(token,curIdContact,content,setMessages,setContactList);
+            Queries.PostTransfer(username,curIdContact,server,content);
         }
             document.getElementById("toSendField").value = "";
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;

@@ -1,8 +1,10 @@
 
 
+    var myServer = 'localhost:7132';
+
     function GetDname(token,setDname){
         $.ajax({
-            url: 'https://localhost:7132/api/Users/displayname',
+            url: 'https://'+myServer+'/api/Users/displayname',
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer '+token)
@@ -15,7 +17,7 @@
     
     function GetMessages(token,id,setMessages){
         $.ajax({
-            url: 'https://localhost:7132/api/contacts/'+id+'/messages',
+            url: 'https://'+myServer+'/api/contacts/'+id+'/messages',
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer '+token)
@@ -28,7 +30,7 @@
 
     function GetContacts(token,setContactList){
         $.ajax({
-            url: 'https://localhost:7132/api/contacts',
+            url: 'https://'+myServer+'/api/contacts',
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer '+token)
@@ -41,7 +43,7 @@
 
     function PostLogin(username,password,history){
         $.ajax({
-			url:'https://localhost:7132/api/Users/login?username='+username+'&password='+password,
+			url:'https://'+myServer+'/api/Users/login?username='+username+'&password='+password,
 			type: 'POST',
 			contentType: 'application/json',
 			success: function (data) {
@@ -59,11 +61,12 @@
 
     function PostSignUp(usernameR,passwordR,displayName,history){
         $.ajax({
-			url:'https://localhost:7132/api/Users/signup?username='+usernameR+'&password='+passwordR+'&displayname='+displayName,
+			url:'https://'+myServer+'/api/Users/signup?username='+usernameR+'&password='+passwordR+'&displayname='+displayName,
 			type: 'POST',
 			contentType: 'application/json',
 			success: function (data) {
 				localStorage.setItem('token',data);
+                localStorage.setItem('username', usernameR);
 				history.push("/chat_page");
 			},
 			error: function() {
@@ -75,9 +78,9 @@
 			},
 		});
     }
-    function PostAddContact(token,id,name,server,setContactList){
+    function PostAddContact(token,id,name,server,setContactList){      
         $.ajax({
-            url:'https://localhost:7132/api/contacts',
+            url:'https://'+myServer+'/api/contacts',
             type: 'POST',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer '+ token);
@@ -85,22 +88,17 @@
             contentType: 'application/json',
             data: JSON.stringify({id: id, name: name, server: server}),
             success: function () {
-                var username = localStorage.getItem(username);
                 document.getElementById('alertSuccess').innerHTML = "Contact added:)";
                 document.getElementById('alertSuccess').style.visibility = "visible";
                 GetContacts(token,setContactList);
-                PostInvitation(token,username,id,server);
             },
-            error: function() {
-                document.getElementById('alert').innerHTML = "There is no user with this username:(";
-                document.getElementById('alert').style.visibility = "visible";
-            },
+            error: function() {},
         })
     }
 
     function PostNewMessage(token,curIdContact,content,setMessages,setContactList){
         $.ajax({
-            url:'https://localhost:7132/api/contacts/' + curIdContact + '/messages',
+            url:'https://'+myServer+'/api/contacts/' + curIdContact + '/messages',
             type: 'POST',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer '+ token);
@@ -115,24 +113,40 @@
         })
     }
 
-    function PostInvitation(token,from,to,server){
+    function PostInvitation(token,from,to,dname,server,setContactList){
+        console.log(from);
+        console.log(to);
+        console.log(server);
         $.ajax({
             url:'https://'+server+'/api/invitations',
             type: 'POST',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer '+ token);
-            },
-            data: JSON.stringify({from: from, to: to, server: server}),
             contentType: 'application/json',
+            data: JSON.stringify({from: from, to: to, server: server}), 
             success: function () {
-                console.log("success");
+                PostAddContact(token,to,dname,server,setContactList)
             },
-            error: function() {},
+            error: function() {
+                document.getElementById('alert').innerHTML = "This username does not exist on the server:(";
+                document.getElementById('alert').style.visibility = "visible";
+            },
         })
     }
 
-    const Queries = {GetDname: GetDname, GetMessages: GetMessages, GetContacts: GetContacts, PostAddContact: PostAddContact,
-    PostLogin: PostLogin, PostSignUp: PostSignUp, PostNewMessage: PostNewMessage}
+    function PostTransfer(from,to,server,content){
+        console.log(from);
+        console.log(to);
+        console.log(server);
+        $.ajax({
+            url:'https://'+server+'/api/transfer',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({from: from, to: to, content: content}), 
+            success: function () {},
+            error: function() {},
+        })
+    }
+    const Queries = {GetDname: GetDname, GetMessages: GetMessages, GetContacts: GetContacts, PostInvitation: PostInvitation,
+    PostLogin: PostLogin, PostSignUp: PostSignUp, PostNewMessage: PostNewMessage, PostTransfer: PostTransfer}
 
 
 

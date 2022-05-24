@@ -3,10 +3,10 @@ import './ContactItem.css';
 
 
 
-function ContactItem({id, name, lastMsg, lastMsgDate, ShowCurSession}) {
+function ContactItem({id, name, server, lastMsg, lastMsgDate, ShowCurSession}) {
 
     return (
-        <div onClick={() => { ShowCurSession(id, name) }} className="row contact-chat">
+        <div onClick={() => { ShowCurSession(id, name, server) }} className="row contact-chat">
             <div className="d-flex align-items-center">
                 <div className="col-md-4">
                     <img src="Images/anonymous.png" id='chatPic'></img>

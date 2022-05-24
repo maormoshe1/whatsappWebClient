@@ -30,7 +30,8 @@ function AddContact({token, contacts, setContactList}) {
         }
 
         if (!existInChat) {
-            Queries.PostAddContact(token,id,name,server,setContactList)
+            var username = localStorage.getItem("username");
+            Queries.PostInvitation(token,username,id,name,server,setContactList)
         }
         else{
             document.getElementById('alert').innerHTML = "This user is already in your chats ;)";

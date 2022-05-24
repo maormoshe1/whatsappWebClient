@@ -3,8 +3,8 @@ import "./ContactItem.css"
 
 function ContactList({contacts, ShowCurSession}){
     const contactList = contacts.map((contact,key)=>{    
-        return <ContactItem id={contact.id} name={contact.name} lastMsg={contact.last} lastMsgDate={contact.lastdate}
-        ShowCurSession={ShowCurSession}  key={key}/>
+        return <ContactItem id={contact.id} name={contact.name} server={contact.server} lastMsg={contact.last}
+         lastMsgDate={contact.lastdate} ShowCurSession={ShowCurSession}  key={key}/>
         });
 
         return(
