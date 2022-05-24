@@ -68,6 +68,7 @@ function ChatPage() {
                       curIdContact={curIdContact} setMessages={setMessages} setContactList={setContactList} />
                 </div>
             </div>
+            
         </div>
     );
 }

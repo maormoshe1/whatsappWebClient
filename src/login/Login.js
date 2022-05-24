@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import './Login.css';
 import { useHistory } from "react-router-dom"
 import Queries from '../Queries';
+import * as signalR from '@microsoft/signalr';
 
 
 function Login() {
@@ -106,10 +107,28 @@ function Login() {
 	}
 
 
+	var connection = new signalR.HubConnectionBuilder().withUrl('https://localhost:7132/myHub', {  // localhost from **AspNetCore3.1 service**
+    skipNegotiation: true,
+    transport: signalR.HttpTransportType.WebSockets
+    }).build();
+	connection.start();
+
+	const sendMessage = function() {
+		console.log("sending: " + document.getElementById("A").value);
+		connection.invoke("Changed", document.getElementById("A").value);
+	}
+
+	connection.on("ChangeRecieved", function(value) {
+		console.log("recieved: " + value);
+		document.getElementById("A").value = value;
+	});
+
 	return (
 		<div>
 			<img className='background' src="Images/registerBackground.png" />
 			<img className='mainCanvas' src="Images/switchBackground.jpg" />
+			<input id='A'/>
+			<button onClick={() => { sendMessage() }}>press</button>
 			<div className="mainCanvas">
 				<div id='LoginCan' className='LoginCanvas'>
 					<h1 className='text2'>Sign In</h1>

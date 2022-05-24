@@ -1,7 +1,6 @@
-
+    import $ from 'jquery';
 
     var myServer = 'localhost:7132';
-
     function GetDname(token,setDname){
         $.ajax({
             url: 'https://'+myServer+'/api/Users/displayname',
@@ -146,8 +145,5 @@
         })
     }
     const Queries = {GetDname: GetDname, GetMessages: GetMessages, GetContacts: GetContacts, PostInvitation: PostInvitation,
-    PostLogin: PostLogin, PostSignUp: PostSignUp, PostNewMessage: PostNewMessage, PostTransfer: PostTransfer}
-
-
-
+    PostLogin: PostLogin, PostSignUp: PostSignUp, PostNewMessage: PostNewMessage, PostTransfer: PostTransfer};
 export default Queries;
