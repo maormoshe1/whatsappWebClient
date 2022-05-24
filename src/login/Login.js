@@ -106,30 +106,10 @@ function Login() {
 		document.getElementById('alert').style.visibility = "collapse";
 	}
 
-
-	var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug)
-    .withUrl("https://localhost:7132/myHub", {
-      skipNegotiation: true,
-      transport: signalR.HttpTransportType.WebSockets
-    }).build();
-	connection.start();
-
-	const sendMessage = function() {
-		console.log("sending: " + document.getElementById("A").value);
-		connection.invoke("Changed", document.getElementById("A").value);
-	}
-
-	connection.on("ChangeRecieved", function(value) {
-		console.log("recieved: " + value);
-		document.getElementById("A").value = value;
-	});
-
 	return (
 		<div>
 			<img className='background' src="Images/registerBackground.png" />
 			<img className='mainCanvas' src="Images/switchBackground.jpg" />
-			<input id='A'/>
-			<button onClick={() => { sendMessage() }}>press</button>
 			<div className="mainCanvas">
 				<div id='LoginCan' className='LoginCanvas'>
 					<h1 className='text2'>Sign In</h1>

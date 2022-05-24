@@ -12,7 +12,6 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
     
 
 	const sendMessage = function() {
-		console.log("sending: ");
 		connection.invoke("Changed");
 	}
 
@@ -30,13 +29,10 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
     useEffect(() => {
         if (connection) {
             connection.start()
-                .then(result => {
-                    console.log('Connected!');
-    
+                .then(result => {   
                     connection.on("ChangeRecieved", function() {
                         Queries.GetMessages(token,curIdContact,setMessages);
-                        console.log("recieved: ");
-		                //document.getElementById("A").value = value;
+                        Queries.GetContacts(token,setContactList);
                     });
                 })
                 .catch(e => console.log('Connection failed: ', e));
@@ -45,15 +41,14 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
 
     const handleSend = (content) => {
         if ((content != "") ) {
+            connection.invoke("Changed");
             var username = localStorage.getItem("username");
             Queries.PostNewMessage(token,curIdContact,content,setMessages,setContactList);
             Queries.PostTransfer(username,curIdContact,server,content);
-            //connection.invoke("Changed");
-            console.log("sending: ");
-		    connection.invoke("Changed");
         }
             document.getElementById("toSendField").value = "";
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
+            
         }
 
     if (curNameContact=="") {
@@ -76,9 +71,6 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
                     <MessageList className='messageBubble' messages={messages} />
                 </div>
                 <div className='msg-controller'>
-                    {/* <input id='A'/> */}
-			        {/* <button onClick={() => { sendMessage() }}>press</button> */}
-                    {/* <i id="send" className="bi-send" onClick={() => { sendMessage() }}/> */}
                     <i id="send" className="bi-send" onClick={() => { handleSend(msg.current.value) }}/>
                     <input id="toSendField" ref={msg} placeholder='type here...'></input>
 
