@@ -31,8 +31,7 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
             connection.start()
                 .then(result => {   
                     connection.on("ChangeRecieved", function() {
-                        Queries.GetMessages(token,curIdContact,setMessages);
-                        Queries.GetContacts(token,setContactList);
+                        Queries.GetContacts(token,setContactList);                    
                     });
                 })
                 .catch(e => console.log('Connection failed: ', e));
@@ -41,10 +40,10 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
 
     const handleSend = (content) => {
         if ((content != "") ) {
-            connection.invoke("Changed");
             var username = localStorage.getItem("username");
             Queries.PostNewMessage(token,curIdContact,content,setMessages,setContactList);
             Queries.PostTransfer(username,curIdContact,server,content);
+            connection.invoke("Changed");
         }
             document.getElementById("toSendField").value = "";
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
