@@ -8,35 +8,21 @@ import * as signalR from '@microsoft/signalr';
 function ChatItem({ token, messages, server, curIdContact, curNameContact, setMessages, setContactList }) {
 
     const msg = useRef(null);
-    //const [ connection, setConnection ] = useState(null);
+    const [ connection, setConnection ] = useState(null);
     
-    var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug)
-    .withUrl("https://localhost:7132/myHub", {
-      skipNegotiation: true,
-      transport: signalR.HttpTransportType.WebSockets
-    }).build();
-	connection.start();
 
 	const sendMessage = function() {
-		console.log("sending: " + document.getElementById("A").value);
-		connection.invoke("Changed", document.getElementById("A").value);
+		console.log("sending: ");
+		connection.invoke("Changed");
 	}
 
-	connection.on("ChangeRecieved", function(value) {
-		console.log("recieved: " + value);
-		document.getElementById("A").value = value;
-	});
 
-
-   /**  useEffect(() => {
-        const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:7132/myHub', {
-                skipNegotiation: true,
-                transport: signalR.HttpTransportType.WebSockets
-              })
-              .configureLogging(signalR.LogLevel.Information)
-            .withAutomaticReconnect()
-            .build();
+    useEffect(() => {
+        const newConnection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug)
+        .withUrl("https://localhost:7132/myHub", {
+          skipNegotiation: true,
+          transport: signalR.HttpTransportType.WebSockets
+        }).build();
 
         setConnection(newConnection);
     }, []);
@@ -47,20 +33,15 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
                 .then(result => {
                     console.log('Connected!');
     
-                    connection.on('ReceiveMessage', message => {
+                    connection.on("ChangeRecieved", function() {
                         Queries.GetMessages(token,curIdContact,setMessages);
+                        console.log("recieved: ");
+		                //document.getElementById("A").value = value;
                     });
                 })
                 .catch(e => console.log('Connection failed: ', e));
         }
-    }, [connection]);*/
-
-
-
-    /**connection.on("ChangeRecieved", function() {
-        //console.log('recieved ');
-        Queries.GetMessages(token,curIdContact,setMessages);
-    });*/
+    }, [connection]);
 
     const handleSend = (content) => {
         if ((content != "") ) {
@@ -68,6 +49,8 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
             Queries.PostNewMessage(token,curIdContact,content,setMessages,setContactList);
             Queries.PostTransfer(username,curIdContact,server,content);
             //connection.invoke("Changed");
+            console.log("sending: ");
+		    connection.invoke("Changed");
         }
             document.getElementById("toSendField").value = "";
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
@@ -93,10 +76,10 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
                     <MessageList className='messageBubble' messages={messages} />
                 </div>
                 <div className='msg-controller'>
-                    <input id='A'/>
-			        <button onClick={() => { sendMessage() }}>press</button>
-                    <i id="send" className="bi-send" onClick={() => { sendMessage() }}/>
-                    {/* <i id="send" className="bi-send" onClick={() => { handleSend(msg.current.value) }}/> */}
+                    {/* <input id='A'/> */}
+			        {/* <button onClick={() => { sendMessage() }}>press</button> */}
+                    {/* <i id="send" className="bi-send" onClick={() => { sendMessage() }}/> */}
+                    <i id="send" className="bi-send" onClick={() => { handleSend(msg.current.value) }}/>
                     <input id="toSendField" ref={msg} placeholder='type here...'></input>
 
                 </div>
