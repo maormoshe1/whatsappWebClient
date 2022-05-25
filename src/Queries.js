@@ -1,6 +1,8 @@
     import $ from 'jquery';
-
+    import * as signalR from '@microsoft/signalr';
+    
     var myServer = 'localhost:7132';
+    const curIdContact ='';
     function GetDname(token,setDname){
         $.ajax({
             url: 'https://'+myServer+'/api/Users/displayname',
@@ -15,6 +17,7 @@
     }
     
     function GetMessages(token,id,setMessages){
+        console.log('https://'+myServer+'/api/contacts/'+id+'/messages')
         $.ajax({
             url: 'https://'+myServer+'/api/contacts/'+id+'/messages',
             type: 'GET',
@@ -144,6 +147,16 @@
             error: function() {},
         })
     }
+
+    function SignalR(setConnection){
+        const newConnection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug)
+        .withUrl("https://localhost:7132/myHub", {
+          skipNegotiation: true,
+          transport: signalR.HttpTransportType.WebSockets
+        }).build();
+        setConnection(newConnection);
+    }
     const Queries = {GetDname: GetDname, GetMessages: GetMessages, GetContacts: GetContacts, PostInvitation: PostInvitation,
-    PostLogin: PostLogin, PostSignUp: PostSignUp, PostNewMessage: PostNewMessage, PostTransfer: PostTransfer};
+    PostLogin: PostLogin, PostSignUp: PostSignUp, PostNewMessage: PostNewMessage, PostTransfer: PostTransfer,
+    SignalR: SignalR, curIdContact: curIdContact};
 export default Queries;

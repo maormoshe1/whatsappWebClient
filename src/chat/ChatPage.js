@@ -7,6 +7,8 @@ import AddContact from '../contact/AddContact';
 import '../Queries'
 import Queries from '../Queries';
 
+
+
 function ChatPage() {
 
     const token = localStorage.getItem("token");
@@ -21,23 +23,27 @@ function ChatPage() {
 
     const [curNameContact, setCurNameContact] = useState('')
 
-    const [curIdContact, setCurIdContact] = useState('')
+    const [curIdContact, setCurIdContact] = useState('');
+
+
 
     const ShowCurSession = function (id, name, server) {
         setCurNameContact(name);
         setCurIdContact(id);
-        setServer(server)
+        setServer(server);
+        Queries.curIdContact = id;
         Queries.GetMessages(token,id,setMessages);
     }
  
-    function ShowContactList(){
-        useEffect( () =>{
-            Queries.GetContacts(token,setContactList);
-        })};
-     
-    Queries.GetDname(token,setDname);
-    ShowContactList();
-   
+    useEffect( () =>{
+        Queries.GetDname(token,setDname);
+    })
+      
+    useEffect( () =>{
+        Queries.GetContacts(token,setContactList);
+    })
+  
+  
     return (
         <div className="container">
             <img className='background' src="Images/registerBackground.png" />
