@@ -22,11 +22,11 @@ function ChatItem({ token, messages, server, curIdContact, curNameContact, setMe
                     {
                         var username = localStorage.getItem("username");
                         if(curIdContact == username){
-                            if(Queries.curIdContact == id){
-                            Queries.GetMessages(token,id,setMessages);
-                            }
+                            if(Queries.curIdContact == id)
+                                Queries.GetMessages(token,id,setMessages);
+                            
                             Queries.GetContacts(token,setContactList);
-                            }                                          
+                        }                                          
                      });
                 }).catch(e => console.log('Connection failed: ', e));                                               
             }

@@ -1,4 +1,4 @@
-
+To run this project you need to install: "jquery" and "@microsoft/signalr" in npm
 
 There are 4 usernames hardcoded
 user name: Maor     password: Mm1
