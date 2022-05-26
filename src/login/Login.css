@@ -133,10 +133,11 @@
 	transition: 0.5s;
 	background-size: 200% auto;
 	color: white;            
-	width: 50%;
+	width: 15%;
 	border-radius: 10px;
-	left: 50%;
-	transform: translate(-50%, 280%);
+	margin-left: 28%;
+    top: 84%;
+    position: fixed;
  }
 
  .btn-grad:hover {
