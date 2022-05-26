@@ -4,7 +4,7 @@ function Message({msg}) {
   var msgTime = msg.created.substring(11,16);
   if (msg.sent) {
     return (
-      <div className="grid">
+      <div className="col-md-6">
         <p id="text-msg" >
           <text className='msg-text'> {msg.content} </text>
           <small className="text-muted">{msgTime}</small>
@@ -14,7 +14,7 @@ function Message({msg}) {
   }
   else {
     return (
-      <div className="grid">
+      <div className="col-md-6">
         <p id="reciveMsg-text" >
           <text className='msg-text'> {msg.content} </text>
           <small className="text-muted"> {msgTime}</small>

@@ -116,9 +116,9 @@
     }
 
     function PostInvitation(token,from,to,dname,server,setContactList){
-        console.log(from);
-        console.log(to);
-        console.log(server);
+        //console.log(from);
+        //console.log(to);
+        //console.log(server);
         $.ajax({
             url:'https://'+server+'/api/invitations',
             type: 'POST',
@@ -135,9 +135,9 @@
     }
 
     function PostTransfer(from,to,server,content){
-        console.log(from);
-        console.log(to);
-        console.log(server);
+        //console.log(from);
+        //console.log(to);
+        //console.log(server);
         $.ajax({
             url:'https://'+server+'/api/transfer',
             type: 'POST',
@@ -150,7 +150,7 @@
 
     function SignalR(setConnection){
         const newConnection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug)
-        .withUrl("https://localhost:7132/myHub", {
+        .withUrl('https://'+myServer+'/myHub', {
           skipNegotiation: true,
           transport: signalR.HttpTransportType.WebSockets
         }).build();

@@ -125,6 +125,20 @@
 	transform: translate(-50%, 280%);
  }
 
+ #link {
+	background-image: linear-gradient(to right, #642B73 0%, #C6426E  51%, #642B73  100%);
+	padding: 15px 45px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.5s;
+	background-size: 200% auto;
+	color: white;            
+	width: 50%;
+	border-radius: 10px;
+	left: 50%;
+	transform: translate(-50%, 280%);
+ }
+
  .btn-grad:hover {
 	background-position: right center;
 	color: #fff;

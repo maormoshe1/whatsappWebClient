@@ -1,7 +1,14 @@
 function LastMessage({ lastMsg, lastMsgDate }) {
     var lastMessage = "", lastMessageDate = "";
     if (lastMsg != null) {
-        lastMessage = lastMsg;
+        console.log(lastMsg.length)
+        if(lastMsg.length > 35){
+            
+            lastMessage = lastMsg.substring(0,35)+"...";
+        }        
+        else{
+            lastMessage = lastMsg;
+        }       
         lastMessageDate = lastMsgDate.substring(11,16);
     }
 

@@ -1,7 +1,6 @@
 
 
-There are 7 username hardcoded
-user name: Shir     password: Ss1 
+There are 4 usernames hardcoded
 user name: Maor     password: Mm1
 user name: Daniel   password: Dd1
 user name: Nikol    password: Nn1

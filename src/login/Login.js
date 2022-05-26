@@ -117,9 +117,9 @@ function Login() {
 					<input onClick={() => { closeAlert() }} ref={username} className='input' type="uname" placeholder='Username' required />
 					<br /><br />
 					<input onClick={() => { closeAlert() }} ref={password} className='input' type="password" placeholder='Password' required />
-
 					<button  onClick={() => { handleLogin() }} className='btn-grad'>Login</button>
-
+					<br /><br />
+					<a href='http://localhost:5035' id='link'>ranking site</a>
 				</div>
 
 
