@@ -1,4 +1,15 @@
-To run this project you need to install: "jquery" and "@microsoft/signalr" in npm
+How to run the code:
+
+Install node.js
+open cmd and execute: git clone https://github.com/maormoshe1/whatsappWebClient.git
+Go into the cloned folder with cd whatsappWebClient
+Run npm install
+Run npm start
+
+Download requierd:
+react-router
+"jquery" by the command: npm install jquery
+signalR by the command: npm install @microsoft/signalr
 Before you start run the server and the ranking site 
 
 There are 4 usernames hardcoded on the server
