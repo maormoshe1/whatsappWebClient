@@ -10,7 +10,8 @@ Download requierd:
 1. react-router
 2. "jquery" by the command: npm install jquery
 3. signalR by the command: npm install @microsoft/signalr
-Before you start run the server and the ranking site 
+Before you start:
+run the server and the ranking site 
 
 There are 4 usernames hardcoded on the server
 user name: Nikol    password: Nn1
