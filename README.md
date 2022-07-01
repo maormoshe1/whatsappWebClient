@@ -1,15 +1,15 @@
 How to run the code:
 
-Install node.js
-open cmd and execute: git clone https://github.com/maormoshe1/whatsappWebClient.git
-Go into the cloned folder with cd whatsappWebClient
-Run npm install
-Run npm start
+1. Install node.js
+2. open cmd and execute: git clone https://github.com/maormoshe1/whatsappWebClient.git
+3. Go into the cloned folder with cd whatsappWebClient
+4. Run npm install
+5. Run npm start
 
 Download requierd:
-react-router
-"jquery" by the command: npm install jquery
-signalR by the command: npm install @microsoft/signalr
+1. react-router
+2. "jquery" by the command: npm install jquery
+3. signalR by the command: npm install @microsoft/signalr
 Before you start run the server and the ranking site 
 
 There are 4 usernames hardcoded on the server
